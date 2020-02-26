@@ -61,7 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\Person.cs" />
     <Compile Include="Tools\Managers\BaseViewModel.cs" />
     <Compile Include="Tools\Managers\ILoaderOwner.cs" />
     <Compile Include="Tools\Managers\LoaderManager.cs" />
@@ -70,6 +70,9 @@
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Date.xaml.cs">
       <DependentUpon>Date.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Tools\LabelAndTextControl.xaml.cs">
+      <DependentUpon>LabelAndTextControl.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -84,6 +87,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Date.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Tools\LabelAndTextControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,5 +132,6 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

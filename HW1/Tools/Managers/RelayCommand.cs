@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace HW1.Tools
+namespace CSharpHomework.Tools
 {
     public class RelayCommand<T> : ICommand
     {

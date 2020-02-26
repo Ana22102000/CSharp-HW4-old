@@ -1,24 +1,24 @@
-﻿using HW1.Tools;
+﻿using CSharpHomework.Tools;
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using HW1.Model;
-using HW1.Tools.Managers;
+using CSharpHomework.Model;
+using CSharpHomework.Tools.Managers;
 
 
-namespace HW1.ViewModel
+namespace CSharpHomework.ViewModel
 {
     internal class DateViewModel : BaseViewModel
     {
 
-
         #region Fields
-         private string _age;
+        private string _name;
+        private string _surname;
+        private string _email;
+
+        private string _personInfo;
 
         private DateTime _selectedDate=DateTime.Now;
-        private string _zodiakSign;
-        private string _zodiakYear;
 
 
         #region Commands
@@ -27,35 +27,45 @@ namespace HW1.ViewModel
         #endregion
 
         #region Properties
-      
 
-        public string Age
+
+        public string Name
         {
-            get { return _age; }
+            get { return _name; }
             set
             {
-                _age = value;
-                OnPropertyChanged(nameof(Age));
+                _name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
 
-        public string ZodiakSign
+        public string Surname
         {
-            get { return _zodiakSign; }
+            get { return _surname; }
             set
             {
-                _zodiakSign = value;
-                OnPropertyChanged(nameof(ZodiakSign));
+                _surname = value;
+                OnPropertyChanged(nameof(Surname));
             }
         }
 
-        public string ZodiakYear
+        public string Email
         {
-            get { return _zodiakYear; }
+            get { return _email; }
             set
             {
-                _zodiakYear = value;
-                OnPropertyChanged(nameof(ZodiakYear));
+                _email = value;
+                OnPropertyChanged(nameof(Email));
+            }
+        }
+
+        public string PersonInfo
+        {
+            get { return _personInfo; }
+            set
+            {
+                _personInfo = value;
+                OnPropertyChanged(nameof(PersonInfo));
             }
         }
 
@@ -71,7 +81,6 @@ namespace HW1.ViewModel
                 OnPropertyChanged();
             }
         }
-
 
         #region Commands
 
@@ -91,203 +100,59 @@ namespace HW1.ViewModel
 
         private bool CanExecuteCommand()
         {
-            return _selectedDate != null;
+            return !(string.IsNullOrWhiteSpace(Name)
+                     || string.IsNullOrWhiteSpace(Surname)
+                     || string.IsNullOrWhiteSpace(Email)
+                     || SelectedDate==null
+                     );
+            //return _selectedDate != null;
         }
         private async void CalculateImplementation(object obj)
         {
-
             LoaderManager.Instance.ShowLoader();
-            await Task.Run(() => Thread.Sleep(2000));
+            // await Task.Run(() => Thread.Sleep(2000));
 
-            await Task.Run(()=>CountInformation());
+            await Task.Run(() => CreatePerson());
 
             LoaderManager.Instance.HideLoader();
         }
 
-
-        private void CountInformation()
+        private void CreatePerson()
         {
-            // MessageBox.Show("You get it");
-            DateTime now = DateTime.Now;
+           
+                Person person = new Person(Name, Surname, Email, SelectedDate);
 
+                DateTime now = DateTime.Now;
 
+                int age = now.Year - person.Birthday.Year;
 
+                // for leap years we need this
+                if (person.Birthday > now.AddYears(-age)) age--;
+                // don't use:
+                // if (birthDate.AddYears(age) > now) age--;
 
-            Thread myThread = new Thread(new ThreadStart( Count));
-            myThread.Start();
+                if (age < 0 || age > 135)
+                {
+                    PersonInfo = "";
+                    MessageBox.Show("Wrong age (More than 135 or less than 0 years old)");
+                }
+            else {
+                // throw new System.ArgumentException("Wrong age (More than 135 or less than 0 years old)");
 
-            
+                PersonInfo = "Name: " + person.Name + Environment.NewLine +
+                             "Surname:" + person.Surname + Environment.NewLine +
+                             "Email: " + person.Email + Environment.NewLine +
+                             "Birthday: " + person.Birthday.Date.ToShortDateString() + Environment.NewLine +
+                             "IsAdult: " + person.IsAdult + Environment.NewLine +
+                             "SunSign: " + person.SunSign + Environment.NewLine +
+                             "ChineseSign: " + person.ChineseSign + Environment.NewLine +
+                             "IsBirthday: " + person.IsBirthday;
 
-            
-
-
-        }
-
-        private void Count()
-        {
-            DateTime now = DateTime.Now;
-
-            int age = now.Year - SelectedDate.Year;
-
-            // for leap years we need this
-            if (SelectedDate > now.AddYears(-age)) age--;
-            // don't use:
-            // if (birthDate.AddYears(age) > now) age--;
-
-            Age = age.ToString();
-
-
-            if (Int32.Parse(Age) < 0 || Int32.Parse(Age) > 135)
-            {
-                MessageBox.Show("Wrong date (More than 135 or less than 0 years old)");
-                Age = "";
-                ZodiakSign = "";
-                ZodiakYear = "";
-
-            }
-            else
-            {
-
-                Thread myThread = new Thread(new ThreadStart(CountZodiakSign));
-                myThread.Start();
-
-                myThread = new Thread(new ThreadStart(CountZodiakYear));
-                myThread.Start();
-
-                User user = new User(Int32.Parse(Age), ZodiakSign, ZodiakYear);
-
-                if (SelectedDate.Day == now.Day && SelectedDate.Month == now.Month)
+                if (person.IsBirthday)
                     MessageBox.Show("Happy B-Day, dear!");
-
-            }
-
-        }
-
-        private void CountZodiakSign()
-        {
-            switch (SelectedDate.Month)
-            {
-                case 1:
-                    if (SelectedDate.Day <= 20)
-                    { ZodiakSign = "Your zodiac sign is Capricorn"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Aquarius"; }
-                    break;
-                case 2:
-                    if (SelectedDate.Day <= 19)
-                    { ZodiakSign = "Your zodiac sign is Aquarius"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Pisces"; }
-                    break;
-                case 3:
-                    if (SelectedDate.Day <= 20)
-                    { ZodiakSign = "Your zodiac sign is Pisces"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Aries"; }
-                    break;
-                case 4:
-                    if (SelectedDate.Day <= 20)
-                    { ZodiakSign = "Your zodiac sign is Aries"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Taurus"; }
-                    break;
-                case 5:
-                    if (SelectedDate.Day <= 21)
-                    { ZodiakSign = "Your zodiac sign is Taurus"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Gemini"; }
-                    break;
-                case 6:
-                    if (SelectedDate.Day <= 22)
-                    { ZodiakSign = "Your zodiac sign is Gemini"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Cancer"; }
-                    break;
-                case 7:
-                    if (SelectedDate.Day <= 22)
-                    { ZodiakSign = "Your zodiac sign is Cancer"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Leo"; }
-                    break;
-                case 8:
-                    if (SelectedDate.Day <= 23)
-                    { ZodiakSign = "Your zodiac sign is Leo"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Virgo"; }
-                    break;
-                case 9:
-                    if (SelectedDate.Day <= 23)
-                    { ZodiakSign = "Your zodiac sign is Virgo"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Libra"; }
-                    break;
-                case 10:
-                    if (SelectedDate.Day <= 23)
-                    { ZodiakSign = "Your zodiac sign is Libra"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Scorpio"; }
-                    break;
-                case 11:
-                    if (SelectedDate.Day <= 22)
-                    { ZodiakSign = "Your zodiac sign is Scorpio"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Sagittarius"; }
-                    break;
-                case 12:
-                    if (SelectedDate.Day <= 21)
-                    { ZodiakSign = "Your zodiac sign is Sagittarius"; }
-                    else
-                    { ZodiakSign = "Your zodiac sign is Capricorn"; }
-                    break;
-
-            }
-        }
-
-        private void CountZodiakYear()
-        {
-
-            switch (SelectedDate.Year % 12)
-            {
-                case 0:
-                    ZodiakYear = "Your zodiak year is Monkey";
-                    break;
-                case 1:
-                    ZodiakYear = "Your zodiak year is Rooster";
-                    break;
-                case 2:
-                    ZodiakYear = "Your zodiak year is Dog";
-                    break;
-                case 3:
-                    ZodiakYear = "Your zodiak year is Pig";
-                    break;
-                case 4:
-                    ZodiakYear = "Your zodiak year is Rat";
-                    break;
-                case 5:
-                    ZodiakYear = "Your zodiak year is Ox";
-                    break;
-                case 6:
-                    ZodiakYear = "Your zodiak year is Tiger";
-                    break;
-                case 7:
-                    ZodiakYear = "Your zodiak year is Rabbit";
-                    break;
-                case 8:
-                    ZodiakYear = "Your zodiak year is Dragon";
-                    break;
-                case 9:
-                    ZodiakYear = "Your zodiak year is Snake";
-                    break;
-                case 10:
-                    ZodiakYear = "Your zodiak year is Horse";
-                    break;
-                case 11:
-                    ZodiakYear = "Your zodiak year is Goat";
-                    break;
-
-
-            }
-
+            
+                }
+           
         }
 
     }

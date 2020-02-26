@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
 
-namespace HW1.Tools
+namespace CSharpHomework.Tools
 {
     internal abstract class BaseViewModel : INotifyPropertyChanged
     {

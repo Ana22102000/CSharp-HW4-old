@@ -1,8 +1,8 @@
-﻿using HW1.Tools;
+﻿using CSharpHomework.Tools;
 using System.Windows;
-using HW1.Tools.Managers;
+using CSharpHomework.Tools.Managers;
 
-namespace HW1.ViewModel
+namespace CSharpHomework.ViewModel
 {
     internal class MainWindowViewModel : BaseViewModel, ILoaderOwner
     {

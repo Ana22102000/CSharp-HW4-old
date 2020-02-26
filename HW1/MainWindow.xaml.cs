@@ -1,8 +1,8 @@
 ﻿
 using System.Windows;
-using HW1.ViewModel;
+using CSharpHomework.ViewModel;
 
-namespace HW1
+namespace CSharpHomework
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace HW1.Tools.Managers
+namespace CSharpHomework.Tools.Managers
 {
     internal class LoaderManager
     {

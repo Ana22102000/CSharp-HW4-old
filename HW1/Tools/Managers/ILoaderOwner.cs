@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 
-namespace HW1.Tools
+namespace CSharpHomework.Tools
 {
     internal interface ILoaderOwner : INotifyPropertyChanged
     {
