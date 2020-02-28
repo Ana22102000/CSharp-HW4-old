@@ -18,8 +18,7 @@ namespace CSharpHomework.ViewModel
 
         private string _personInfo;
 
-        private DateTime _selectedDate=DateTime.Now;
-
+        private Nullable<DateTime> _selectedDate=DateTime.Now;
 
         #region Commands
         private RelayCommand<object> _calculateCommand;
@@ -69,7 +68,7 @@ namespace CSharpHomework.ViewModel
             }
         }
 
-        public DateTime SelectedDate
+        public Nullable<DateTime> SelectedDate
         {
             get
             {
@@ -120,7 +119,7 @@ namespace CSharpHomework.ViewModel
         private void CreatePerson()
         {
            
-                Person person = new Person(Name, Surname, Email, SelectedDate);
+                Person person = new Person(Name, Surname, Email, (DateTime)SelectedDate);
 
                 DateTime now = DateTime.Now;
 
