@@ -66,6 +66,7 @@
     <Compile Include="Tools\Managers\ILoaderOwner.cs" />
     <Compile Include="Tools\Managers\LoaderManager.cs" />
     <Compile Include="Tools\Managers\RelayCommand.cs" />
+    <Compile Include="Tools\MyExceptions\MyExceptions.cs" />
     <Compile Include="ViewModel\DateViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Date.xaml.cs">

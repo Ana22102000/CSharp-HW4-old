@@ -104,12 +104,10 @@ namespace CSharpHomework.ViewModel
                      || string.IsNullOrWhiteSpace(Email)
                      || SelectedDate==null
                      );
-            //return _selectedDate != null;
         }
         private async void CalculateImplementation(object obj)
         {
             LoaderManager.Instance.ShowLoader();
-            // await Task.Run(() => Thread.Sleep(2000));
 
             await Task.Run(() => CreatePerson());
 
@@ -118,8 +116,10 @@ namespace CSharpHomework.ViewModel
 
         private void CreatePerson()
         {
-           
-                Person person = new Person(Name, Surname, Email, (DateTime)SelectedDate);
+
+            try
+            {
+                Person person = new Person(Name, Surname, Email, (DateTime) SelectedDate);
 
                 DateTime now = DateTime.Now;
 
@@ -129,14 +129,6 @@ namespace CSharpHomework.ViewModel
                 if (person.Birthday > now.AddYears(-age)) age--;
                 // don't use:
                 // if (birthDate.AddYears(age) > now) age--;
-
-                if (age < 0 || age > 135)
-                {
-                    PersonInfo = "";
-                    MessageBox.Show("Wrong age (More than 135 or less than 0 years old)");
-                }
-            else {
-                // throw new System.ArgumentException("Wrong age (More than 135 or less than 0 years old)");
 
                 PersonInfo = "Name: " + person.Name + Environment.NewLine +
                              "Surname:" + person.Surname + Environment.NewLine +
@@ -149,9 +141,14 @@ namespace CSharpHomework.ViewModel
 
                 if (person.IsBirthday)
                     MessageBox.Show("Happy B-Day, dear!");
-            
-                }
-           
+
+            }
+            catch (Exception e)
+            {
+                PersonInfo = "";
+                MessageBox.Show(e.Message);
+            }
+
         }
 
     }

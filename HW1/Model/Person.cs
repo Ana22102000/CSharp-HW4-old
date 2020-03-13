@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading;
+using CSharpHomework.Tools.MyExceptions;
 
 namespace CSharpHomework.Model
 {
@@ -12,10 +14,17 @@ namespace CSharpHomework.Model
             Email = email;
             Birthday = birthday;
 
+
+            checkEmail();
+            checkName();
+            checkSurname();
+
             Thread myThread = new Thread(new ThreadStart(Count));
             myThread.Start();
             myThread.Join();
-            //todo throw exceptions
+
+
+            checkAge(age);
 
         }
 
@@ -46,18 +55,21 @@ namespace CSharpHomework.Model
 
         public bool IsBirthday { get; private set; }
 
+        private int age = 0;
         private void Count()
         {
             DateTime now = DateTime.Now;
 
-            int age = now.Year - Birthday.Year;
+            age = now.Year - Birthday.Year;
 
             // for leap years we need this
             if (Birthday > now.AddYears(-age)) age--;
             // don't use:
             // if (birthDate.AddYears(age) > now) age--;
 
-            Thread myThread = new Thread(new ThreadStart(CountSunSign));
+            if (age >= 0 && age <= 135)
+            {
+                Thread myThread = new Thread(new ThreadStart(CountSunSign));
                 myThread.Start();
                 myThread.Join();
 
@@ -78,6 +90,7 @@ namespace CSharpHomework.Model
                 if (age >= 18)
                     IsAdult = true;
                 else IsAdult = false;
+            }
         }
 
         private void CountSunSign()
@@ -265,7 +278,39 @@ namespace CSharpHomework.Model
 
         }
 
+
+        private void checkEmail()
+        {
+            if (!Regex.IsMatch(Email, "^([a-z0-9+_-]+)([.]?[a-z0-9+_-]+)*@([a-z0-9-]+[.])+[a-z]{2,6}$"))
+
+                throw new EmailException("Wrong Email");
+
+        }
+        private void checkName()
+        {
+            if (!Regex.IsMatch(Name, "^[a-zA-Z]+$"))
+                throw new NameException("Wrong Name");
+        }
+
+        private void checkSurname()
+        {
+            if (!Regex.IsMatch(Surname,"^[A-Za-z ]+$"))
+                throw new SurnameException("Wrong Surname");
+        }
+
+
+        private void checkAge(int age)
+        {
+            if(age<0)
+                throw new NotBornException("Age<0");
+            if(age>135)
+                throw new TooOldException("Age>135");
+        }
+
+
     }
+
+
 }
     
 
