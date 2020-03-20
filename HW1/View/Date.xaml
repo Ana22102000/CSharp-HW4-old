@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             
 
         </Grid.RowDefinitions>
@@ -53,9 +54,9 @@
         <Button Grid.Row="5" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10"
                 Content="Proceed" Command="{Binding CalculateCommand}"/>
 
-        <TextBox Grid.Row="6" Grid.Column="0"  HorizontalAlignment="Stretch" VerticalAlignment="Center" 
-                   
-            Text="{Binding PersonInfo}"></TextBox>
+        <Button Grid.Row="6" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10"
+                Content="Cancel" Command="{Binding CancelCommand}"/>
+
 
     </Grid>
 </UserControl>

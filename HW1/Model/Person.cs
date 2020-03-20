@@ -5,6 +5,8 @@ using CSharpHomework.Tools.MyExceptions;
 
 namespace CSharpHomework.Model
 {
+    [Serializable]
+
     internal class Person
     {
         public Person(string name, string surname, string email, DateTime birthday)
@@ -48,14 +50,88 @@ namespace CSharpHomework.Model
 
         public DateTime Birthday { get; set; }
 
-        public bool IsAdult { get; private set; }
-        public string SunSign { get; private set; }
+        public bool IsAdult
+        {
+            get
+            {
+                if (_isAdult == null)
+                {
+                    if (age>=18)
+                    {
+                        _isAdult = true;
+                    }
+                    else
+                    {
+                        _isAdult = false;
+                    }
+                }
+                return _isAdult.Value;
+            }
+            private set => _isAdult = value;
+        }
 
-        public string ChineseSign { get; private set; }
+        public string SunSign
+        {
+            get
+            {
+                if (_sunSign == null)
+                {
+                    Thread myThread = new Thread(new ThreadStart(CountSunSign));
+                    myThread.Start();
+                    myThread.Join();
+                }
 
-        public bool IsBirthday { get; private set; }
+                return _sunSign;
+            }
+            private set => _sunSign = value;
+        }
+
+        public string ChineseSign
+        {
+            get
+            {
+                if (_chineseSign == null)
+                {
+                    Thread myThread = new Thread(new ThreadStart(CountChineseSign));
+                    myThread.Start();
+                    myThread.Join();
+                }
+
+                return _chineseSign;
+            }
+            private set => _chineseSign= value;
+        }
+
+        public bool IsBirthday
+        {
+            get
+            {
+                if (_isBirthday == null)
+                {
+                    if (Birthday.Day == DateTime.Now.Day && Birthday.Month == DateTime.Now.Month)
+                    {
+                        _isBirthday = true;
+                    }
+                    else
+                    {
+                        _isBirthday = false;
+                    }
+                }
+
+                return _isBirthday.Value;
+            }
+            private set => _isBirthday = value;
+        }
+
 
         private int age = 0;
+
+        private bool? _isAdult;
+        private string _sunSign=null;
+        private string _chineseSign=null;
+        private  Nullable<bool> _isBirthday;
+
+
         private void Count()
         {
             DateTime now = DateTime.Now;
@@ -67,30 +143,7 @@ namespace CSharpHomework.Model
             // don't use:
             // if (birthDate.AddYears(age) > now) age--;
 
-            if (age >= 0 && age <= 135)
-            {
-                Thread myThread = new Thread(new ThreadStart(CountSunSign));
-                myThread.Start();
-                myThread.Join();
-
-                myThread = new Thread(new ThreadStart(CountChineseSign));
-                myThread.Start();
-                myThread.Join();
-
-
-                if (Birthday.Day == now.Day && Birthday.Month == now.Month)
-                {
-                    IsBirthday = true;
-                }
-                else
-                {
-                    IsBirthday = false;
-                }
-
-                if (age >= 18)
-                    IsAdult = true;
-                else IsAdult = false;
-            }
+            
         }
 
         private void CountSunSign()
@@ -100,132 +153,132 @@ namespace CSharpHomework.Model
                 case 1:
                     if (Birthday.Day <= 20)
                     {
-                        SunSign = "Your zodiac sign is Capricorn";
+                        SunSign = "Capricorn";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Aquarius";
+                        SunSign = "Aquarius";
                     }
 
                     break;
                 case 2:
                     if (Birthday.Day <= 19)
                     {
-                        SunSign = "Your zodiac sign is Aquarius";
+                        SunSign = "Aquarius";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Pisces";
+                        SunSign = "Pisces";
                     }
 
                     break;
                 case 3:
                     if (Birthday.Day <= 20)
                     {
-                        SunSign = "Your zodiac sign is Pisces";
+                        SunSign = "Pisces";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Aries";
+                        SunSign = "Aries";
                     }
 
                     break;
                 case 4:
                     if (Birthday.Day <= 20)
                     {
-                        SunSign = "Your zodiac sign is Aries";
+                        SunSign = "Aries";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Taurus";
+                        SunSign = "Taurus";
                     }
 
                     break;
                 case 5:
                     if (Birthday.Day <= 21)
                     {
-                        SunSign = "Your zodiac sign is Taurus";
+                        SunSign = "Taurus";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Gemini";
+                        SunSign = "Gemini";
                     }
 
                     break;
                 case 6:
                     if (Birthday.Day <= 22)
                     {
-                        SunSign = "Your zodiac sign is Gemini";
+                        SunSign = "Gemini";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Cancer";
+                        SunSign = "Cancer";
                     }
 
                     break;
                 case 7:
                     if (Birthday.Day <= 22)
                     {
-                        SunSign = "Your zodiac sign is Cancer";
+                        SunSign = "Cancer";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Leo";
+                        SunSign = "Leo";
                     }
 
                     break;
                 case 8:
                     if (Birthday.Day <= 23)
                     {
-                        SunSign = "Your zodiac sign is Leo";
+                        SunSign = "Leo";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Virgo";
+                        SunSign = "Virgo";
                     }
 
                     break;
                 case 9:
                     if (Birthday.Day <= 23)
                     {
-                        SunSign = "Your zodiac sign is Virgo";
+                        SunSign = "Virgo";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Libra";
+                        SunSign = "Libra";
                     }
 
                     break;
                 case 10:
                     if (Birthday.Day <= 23)
                     {
-                        SunSign = "Your zodiac sign is Libra";
+                        SunSign = "Libra";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Scorpio";
+                        SunSign = "Scorpio";
                     }
 
                     break;
                 case 11:
                     if (Birthday.Day <= 22)
                     {
-                        SunSign = "Your zodiac sign is Scorpio";
+                        SunSign = "Scorpio";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Sagittarius";
+                        SunSign = "Sagittarius";
                     }
 
                     break;
                 case 12:
                     if (Birthday.Day <= 21)
                     {
-                        SunSign = "Your zodiac sign is Sagittarius";
+                        SunSign = "Sagittarius";
                     }
                     else
                     {
-                        SunSign = "Your zodiac sign is Capricorn";
+                        SunSign = "Capricorn";
                     }
 
                     break;
@@ -239,40 +292,40 @@ namespace CSharpHomework.Model
             switch (Birthday.Year % 12)
             {
                 case 0:
-                    ChineseSign = "Your zodiak year is Monkey";
+                    ChineseSign = "Monkey";
                     break;
                 case 1:
-                    ChineseSign = "Your zodiak year is Rooster";
+                    ChineseSign = "Rooster";
                     break;
                 case 2:
-                    ChineseSign = "Your zodiak year is Dog";
+                    ChineseSign = "Dog";
                     break;
                 case 3:
-                    ChineseSign = "Your zodiak year is Pig";
+                    ChineseSign = "Pig";
                     break;
                 case 4:
-                    ChineseSign = "Your zodiak year is Rat";
+                    ChineseSign = "Rat";
                     break;
                 case 5:
-                    ChineseSign = "Your zodiak year is Ox";
+                    ChineseSign = "Ox";
                     break;
                 case 6:
-                    ChineseSign = "Your zodiak year is Tiger";
+                    ChineseSign = "Tiger";
                     break;
                 case 7:
-                    ChineseSign = "Your zodiak year is Rabbit";
+                    ChineseSign = "Rabbit";
                     break;
                 case 8:
-                    ChineseSign = "Your zodiak year is Dragon";
+                    ChineseSign = "Dragon";
                     break;
                 case 9:
-                    ChineseSign = "Your zodiak year is Snake";
+                    ChineseSign = "Snake";
                     break;
                 case 10:
-                    ChineseSign = "Your zodiak year is Horse";
+                    ChineseSign = "Horse";
                     break;
                 case 11:
-                    ChineseSign = "Your zodiak year is Goat";
+                    ChineseSign = "Goat";
                     break;
             }
 

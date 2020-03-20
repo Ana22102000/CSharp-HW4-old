@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using CSharpHomework.Model;
 using CSharpHomework.Tools.Managers;
+using CSharpHomework.Tools.Navigation;
 
 
 namespace CSharpHomework.ViewModel
@@ -16,12 +17,14 @@ namespace CSharpHomework.ViewModel
         private string _surname;
         private string _email;
 
-        private string _personInfo;
 
         private Nullable<DateTime> _selectedDate=DateTime.Now;
 
         #region Commands
         private RelayCommand<object> _calculateCommand;
+        private RelayCommand<object> _cancelCommand;
+
+        
         #endregion
         #endregion
 
@@ -58,16 +61,6 @@ namespace CSharpHomework.ViewModel
             }
         }
 
-        public string PersonInfo
-        {
-            get { return _personInfo; }
-            set
-            {
-                _personInfo = value;
-                OnPropertyChanged(nameof(PersonInfo));
-            }
-        }
-
         public Nullable<DateTime> SelectedDate
         {
             get
@@ -92,7 +85,23 @@ namespace CSharpHomework.ViewModel
             }
         }
 
+        public RelayCommand<Object> CancelCommand
+        {
+            get
+            {
+                return _cancelCommand ?? (_cancelCommand = new RelayCommand<object>(o =>
+                {
 
+                    if(_defPerson!=null)
+                        StationManager.DataStorage.AddUser(_defPerson);
+
+                    _defPerson = null;
+
+                    NavigationManager.Instance.Navigate(ViewType.Main);
+
+                }));
+            }
+        }
         #endregion
         #endregion
 
@@ -111,7 +120,13 @@ namespace CSharpHomework.ViewModel
 
             await Task.Run(() => CreatePerson());
 
+            _defPerson = null;
+
             LoaderManager.Instance.HideLoader();
+
+
+            NavigationManager.Instance.Navigate(ViewType.Main);
+
         }
 
         private void CreatePerson()
@@ -130,26 +145,48 @@ namespace CSharpHomework.ViewModel
                 // don't use:
                 // if (birthDate.AddYears(age) > now) age--;
 
-                PersonInfo = "Name: " + person.Name + Environment.NewLine +
-                             "Surname:" + person.Surname + Environment.NewLine +
-                             "Email: " + person.Email + Environment.NewLine +
-                             "Birthday: " + person.Birthday.Date.ToShortDateString() + Environment.NewLine +
-                             "IsAdult: " + person.IsAdult + Environment.NewLine +
-                             "SunSign: " + person.SunSign + Environment.NewLine +
-                             "ChineseSign: " + person.ChineseSign + Environment.NewLine +
-                             "IsBirthday: " + person.IsBirthday;
-
                 if (person.IsBirthday)
                     MessageBox.Show("Happy B-Day, dear!");
+
+                StationManager.DataStorage.AddUser(person);
 
             }
             catch (Exception e)
             {
-                PersonInfo = "";
+                //PersonInfo = "";
                 MessageBox.Show(e.Message);
+            }
+            finally
+            {
+                Name = "";
+                Surname = "";
+                Email = "";
+                SelectedDate=DateTime.Now;
             }
 
         }
+
+
+        public DateViewModel()
+
+        {
+            if (_defPerson != null)
+            {
+                Name = _defPerson.Name;
+                Surname = _defPerson.Surname;
+                Email = _defPerson.Email;
+                SelectedDate = _defPerson.Birthday;
+
+            }
+        }
+
+        static private Person _defPerson=null;
+        public static void SetFields(Person person)
+        {
+            _defPerson=new Person(person.Name,person.Surname,person.Email,person.Birthday);
+            
+        }
+
 
     }
 }

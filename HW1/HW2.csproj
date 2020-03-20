@@ -62,15 +62,30 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Person.cs" />
-    <Compile Include="Tools\Managers\BaseViewModel.cs" />
-    <Compile Include="Tools\Managers\ILoaderOwner.cs" />
+    <Compile Include="Tools\DataStorage\IDataStorage.cs" />
+    <Compile Include="Tools\DataStorage\SerializedDataStorage.cs" />
+    <Compile Include="Tools\BaseViewModel.cs" />
+    <Compile Include="Tools\FileFolderHelper.cs" />
+    <Compile Include="Tools\ILoaderOwner.cs" />
     <Compile Include="Tools\Managers\LoaderManager.cs" />
+    <Compile Include="Tools\Managers\NavigationMeneger.cs" />
     <Compile Include="Tools\Managers\RelayCommand.cs" />
+    <Compile Include="Tools\Managers\SerializationManager.cs" />
+    <Compile Include="Tools\Managers\StationManager.cs" />
     <Compile Include="Tools\MyExceptions\MyExceptions.cs" />
+    <Compile Include="Tools\Navigation\AuthenticationNavigationModel.cs" />
+    <Compile Include="Tools\Navigation\BaseNavigationModel.cs" />
+    <Compile Include="Tools\Navigation\IContentOwner.cs" />
+    <Compile Include="Tools\Navigation\INavigatable.cs" />
+    <Compile Include="Tools\Navigation\INavigationModel.cs" />
     <Compile Include="ViewModel\DateViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="View\Date.xaml.cs">
       <DependentUpon>Date.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainView.xaml.cs">
+      <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Tools\LabelAndTextControl.xaml.cs">
       <DependentUpon>LabelAndTextControl.xaml</DependentUpon>
@@ -88,6 +103,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\Date.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
